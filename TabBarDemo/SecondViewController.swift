@@ -7,14 +7,30 @@
 //
 
 import UIKit
+import WebKit
 
-class SecondViewController: UIViewController {
-
+class SecondViewController: UIViewController, WKNavigationDelegate {
+    var getUrl: TableViewCell = TableViewCell()
+    var webView: WKWebView?
+    var receivedString = ""
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        // 1. create URL
+        let url = URL(string: receivedString)!
+        // 2. load
+        webView?.load(URLRequest(url: url))
+        
     }
 
+    override func loadView() {
+        webView = WKWebView()
+        webView?.navigationDelegate = self
+        self.view = webView
+    }
+
+    func reloadWebView() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
+    }
 
 }
-
